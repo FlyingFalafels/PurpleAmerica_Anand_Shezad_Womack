@@ -5,7 +5,7 @@
  * Block:7
  *
  * Program Purpose:
- *  vBeta 2.1: Colors fully working, better algorithm
+ *  vBeta 2.2: Added functionallity, working on USA-county.txt
  *
  * Algorithm:
  *   - Still messy but cleaner
@@ -15,6 +15,7 @@
  */
 package map;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -35,6 +36,8 @@ public class PoliticalMap extends JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    public String[] states;
+    public String[] years;
 
     public PoliticalMap() {
         initComponents();
@@ -42,8 +45,7 @@ public class PoliticalMap extends JFrame {
 
     public static void main(String[] args) throws IOException {
         
-        
-
+      
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Metal".equals(info.getName())) {
@@ -86,7 +88,7 @@ public class PoliticalMap extends JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        mapSelector.setModel(new javax.swing.DefaultComboBoxModel(new String[]{"USA", "USA-county", "AK", "Al", "AR", "AZ", "CA", "CO", "CT", "DC", "DE", "FL", "GA", "HI", "IA", "ID", "IL", "IN", "KS", "KY", "LA", "MA", "MD", "ME", "MI", "MN", "MO", "MS", "MT ", "NC", "ND", "NE", "NH", "NJ", "NM", "NV ", "NY", "OH", "OK", "OR", "PA", "RI", "SC", "SD", "TN", "TX", "UT", "VA", "WA", "WI", "WV", "WY"}));
+        mapSelector.setModel(new javax.swing.DefaultComboBoxModel(states = new String[]{"USA", "USA-county", "AK", "Al", "AR", "AZ", "CA", "CO", "CT", "DC", "DE", "FL", "GA", "HI", "IA", "ID", "IL", "IN", "KS", "KY", "LA", "MA", "MD", "ME", "MI", "MN", "MO", "MS", "MT ", "NC", "ND", "NE", "NH", "NJ", "NM", "NV ", "NY", "OH", "OK", "OR", "PA", "RI", "SC", "SD", "TN", "TX", "UT", "VA", "WA", "WI", "WV", "WY"}));
         mapSelector.addActionListener(new java.awt.event.ActionListener() {
             @Override
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -98,7 +100,11 @@ public class PoliticalMap extends JFrame {
         go.addActionListener(new java.awt.event.ActionListener() {
             @Override
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                goActionPerformed(evt);
+                try {
+                    goActionPerformed(evt);
+                } catch (FileNotFoundException ex) {
+                    Logger.getLogger(PoliticalMap.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
         
@@ -107,7 +113,7 @@ public class PoliticalMap extends JFrame {
         //setting text
         jLabel2.setText("Choose your state here ");
         
-        yearSelector.setModel(new javax.swing.DefaultComboBoxModel(new String[]{"1960", "1964", "1968", "1972", "1976", "1980", "1984", "1988", "1992", "1996", "2000", "2004", "2008", "2012"}));
+        yearSelector.setModel(new javax.swing.DefaultComboBoxModel(years = new String[]{"1960", "1964", "1968", "1972", "1976", "1980", "1984", "1988", "1992", "1996", "2000", "2004", "2008", "2012"}));
 
         jLabel3.setFont(new java.awt.Font("MS PMincho", 1, 24)); // NOI18N
         jLabel3.setText("Choose your year here");
@@ -192,14 +198,19 @@ public class PoliticalMap extends JFrame {
 
     }
 
-    private void goActionPerformed(java.awt.event.ActionEvent evt) {
-        String base = "src/data/";
-        DrawMap drawMap = new DrawMap(base + mapSelector.getSelectedItem() + ".txt");
-        try {
-            drawMap.populateMap(base + mapSelector.getSelectedItem() + yearSelector.getSelectedItem() + ".txt");
-            //+ "" THE YEAR TO END OF THE STATE IF APPLICABLE (DON'T REQUIRE ONE)
-        } catch (IOException ex) {
-            Logger.getLogger(PoliticalMap.class.getName()).log(Level.SEVERE, null, ex);
+    private void goActionPerformed(java.awt.event.ActionEvent evt) throws FileNotFoundException {
+               String base = "src/data/";
+        if (mapSelector.getSelectedItem().equals("USA-county")) {
+            DrawMap drawMap = new DrawMap(base + mapSelector.getSelectedItem() + ".txt");
+            drawMap.populateCounties(states, (String)yearSelector.getSelectedItem());
+        } else {
+            DrawMap drawMap = new DrawMap(base + mapSelector.getSelectedItem() + ".txt");
+            try {
+                drawMap.populateMap(base + mapSelector.getSelectedItem() + yearSelector.getSelectedItem() + ".txt");
+                //+ "" THE YEAR TO END OF THE STATE IF APPLICABLE (DON'T REQUIRE ONE)
+            } catch (IOException ex) {
+                Logger.getLogger(PoliticalMap.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
 }
