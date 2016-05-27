@@ -5,13 +5,13 @@
  * Block:7
  *
  * Program Purpose:
- *  vBeta 2.2: Added functionallity, working on USA-county.txt
+ *  vBeta 2.3: USA-County works for colors
  *
  * Algorithm:
  *   - Still messy but cleaner
  * 
  * Future/possible improvements: 
- *  Add extra functionality and fix USAcounty.txt drawing
+ *  Add extra functionality, clean code, almost done
  */
 package map;
 
@@ -88,7 +88,7 @@ public class PoliticalMap extends JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        mapSelector.setModel(new javax.swing.DefaultComboBoxModel(states = new String[]{"USA", "USA-county", "AK", "Al", "AR", "AZ", "CA", "CO", "CT", "DC", "DE", "FL", "GA", "HI", "IA", "ID", "IL", "IN", "KS", "KY", "LA", "MA", "MD", "ME", "MI", "MN", "MO", "MS", "MT ", "NC", "ND", "NE", "NH", "NJ", "NM", "NV ", "NY", "OH", "OK", "OR", "PA", "RI", "SC", "SD", "TN", "TX", "UT", "VA", "WA", "WI", "WV", "WY"}));
+        mapSelector.setModel(new javax.swing.DefaultComboBoxModel(states = new String[]{"USA", "USA-county", "AK", "AL", "AR", "AZ", "CA", "CO", "CT", "DC", "DE", "FL", "GA", "HI", "IA", "ID", "IL", "IN", "KS", "KY", "LA", "MA", "MD", "ME", "MI", "MN", "MO", "MS", "MT", "NC", "ND", "NE", "NH", "NJ", "NM", "NV", "NY", "OH", "OK", "OR", "PA", "RI", "SC", "SD", "TN", "TX", "UT", "VA", "VT", "WA", "WI", "WV", "WY"}));
         mapSelector.addActionListener(new java.awt.event.ActionListener() {
             @Override
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -202,7 +202,8 @@ public class PoliticalMap extends JFrame {
                String base = "src/data/";
         if (mapSelector.getSelectedItem().equals("USA-county")) {
             DrawMap drawMap = new DrawMap(base + mapSelector.getSelectedItem() + ".txt");
-            drawMap.populateCounties(states, (String)yearSelector.getSelectedItem());
+            String[] newStateAry = new String[]{"AL", "AR", "AZ", "CA", "CO", "CT", "DC", "DE", "FL", "GA", "IA", "ID", "IL", "IN", "KS", "KY", "LA", "MA", "MD", "ME", "MI", "MN", "MO", "MS", "MT", "NC", "ND", "NE", "NH", "NJ", "NM", "NV", "NY", "OH", "OK", "OR", "PA", "RI", "SC", "SD", "TN", "TX", "UT", "VA", "VT", "WA", "WI", "WV", "WY"};      
+            drawMap.populateCounties(newStateAry, (String)yearSelector.getSelectedItem());
         } else {
             DrawMap drawMap = new DrawMap(base + mapSelector.getSelectedItem() + ".txt");
             try {
