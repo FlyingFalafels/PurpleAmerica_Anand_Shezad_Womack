@@ -5,15 +5,29 @@
  * Block:7
  *
  * Program Purpose:
- *  vBeta 2.4: Finished content, Arvind: "I finished my extra functionallity"
-    Code commented
-    
+ *  This program draws a map that represents a certain state. That state displays an RGB color that represents voting data.
+    The more red the map is, the more republican, blue, democratic and so on. This program is very robust and displays data
+    in a very visually appealing manner with a GUI. Also, the program draws a visual representation of voter data compared to the
+    US census data in which that shows how many people voted VS the population.
  *
  * Algorithm:
+
+FOR GUI:
+ *ATTACHING CLASS TO PACKAGE MAP
+ *IMPORTING NESSESARY ITEMS
+ *CREATING POLITICALMAP CLASS WHICH EXTENDS ATTRIBUTES FROM JFRAME
+ *DECLARING VARIABLES FOR THE GUI
+ *MAIN CLASS STARTS
+ *TRY CATCH METHOD FOR EXCPETIONS
+ *METHOD TO INTIATE GUI
+ *DECLARING VARIABLES FOR GUI
+ *CREATING LOGIC FOR THE MAP SELECTOR
+ *ADDING MULTIPLE COMPONENTS OF THE GUI INCLUDING: LABELS, SELECTORS, BUTTONS, ETC.
+ *METHOD FOR WHAT HAPPENS WHEN GO IS PRESSED
+ *  -IT POPULATES THE MAP BASED OF THE MAP AND YEAR THAT IS SELECTED
  *   
  * 
- * Future/possible improvements: 
- *  Add extra functionality, clean code, almost done
+ *
  */
 package map;
 
@@ -50,6 +64,11 @@ public class PoliticalMap extends JFrame {
         initComponents();
     }
 
+        /*
+    Christian designed to GUI in the JFrame design window and copy/pasted it into this class
+    
+        
+    */
     public static void main(String[] args) throws IOException {
 
         try {
@@ -200,18 +219,32 @@ public class PoliticalMap extends JFrame {
         //GET THE PATH AND SET THE TEXT CHOSEN TO THE TEXT FILE
 
     }
+    
+    
+    
+    
+    //------------------------------------------------------------------------------
+    //This method represents the action event for the GO button object
 
     private void goActionPerformed(java.awt.event.ActionEvent evt) throws FileNotFoundException {
+        //This string is used for concatinating the relative file path. This is used in the DrawMap class to find the absolute path.
         String base = "src/data/";
+        //Specific conditional for USA-county.txt for coloring specifically 
         if (mapSelector.getSelectedItem().equals("USA-county")) {
+            //new DrawMap object
             DrawMap drawMap = new DrawMap(base + mapSelector.getSelectedItem() + ".txt");
+            //Array that contains the states
             String[] newStateAry = new String[]{"AL", "AR", "AZ", "CA", "CO", "CT", "DC", "DE", "FL", "GA", "IA", "ID", "IL", "IN", "KS", "KY", "LA", "MA", "MD", "ME", "MI", "MN", "MO", "MS", "MT", "NC", "ND", "NE", "NH", "NJ", "NM", "NV", "NY", "OH", "OK", "OR", "PA", "RI", "SC", "SD", "TN", "TX", "UT", "VA", "VT", "WA", "WI", "WV", "WY"};
+            //Calls method
             drawMap.populateCounties(newStateAry, (String) yearSelector.getSelectedItem());
         } else {
+            //instance of DrawMap for other data sets
             DrawMap drawMap = new DrawMap(base + mapSelector.getSelectedItem() + ".txt");
+            //Generated try/catch for IOException
             try {
                 drawMap.populateMap(base + mapSelector.getSelectedItem() + yearSelector.getSelectedItem() + ".txt");
                 if (mapSelector.getSelectedItem().equals("USA")) {
+                    //Arvind's functionallity that is called draws a visual representation of voter data for ONLY the map of the USA
                     drawGraph(drawMap);
                 }
             } catch (IOException ex) {
@@ -219,8 +252,20 @@ public class PoliticalMap extends JFrame {
             }
         }
     }
+    
+    
+    
+    /*
+        Arvind's functionallity: For any USA map for any year, the program draws a graph that represents the 
+        voter turnout and compares it to census data.
+        
+    parameter: drawGraph uses a DrawMap object so it can use it's public double array, which stores all the sums of the
+    republican, democratic, and third party data, and uses that to calculate the sum.
+    
+    */
 
     public void drawGraph(DrawMap d) {
+        //HashMap is used for inputing the rounded approximation for the population of its respected year / 1000000
         HashMap map = new HashMap();
         map.put("1960", 181);
         map.put("1964", 192);
@@ -236,23 +281,31 @@ public class PoliticalMap extends JFrame {
         map.put("2004", 293);
         map.put("2008", 304);
         map.put("2012", 313);
+        //Sets canvas size to 1000/500 and sets the X and Y Scale
         StdDraw.setCanvasSize(1000, 500);
         StdDraw.setXscale(0, 900);
         StdDraw.setYscale(0, 500);
+        
+        //Calculated sum based on the year of voter data from the DrawMap class that is taken as a parameter
         int sum = 0;
         for (int i = 0; i < d.sums.length; i++) {
             sum = d.sums[i] + sum;
         }
         double[] ary = new double[2];
+        //The sum is being set to a decimal and put into the array
         ary[0] = (double)(sum) / 100000000.0;
+        
+        //This calculates the decimal value for the population of the  current year
         int temp = (int) map.get((String) yearSelector.getSelectedItem());
         double temp2 = (double) temp / 100;
         ary[1] = temp2;
         
+        //This section sets the x and y scale to 4 and then draws the bar graph based on the array input
         StdDraw.setPenColor(Color.ORANGE);
         StdDraw.setYscale(0, 4);
         StdDraw.setXscale(0, 4);
         StdStats.plotBars(ary);
+        
         StdDraw.setPenColor(Color.black);
         //Text for bars on graph
         StdDraw.text(0, ary[0] / 2, "# of voters");
