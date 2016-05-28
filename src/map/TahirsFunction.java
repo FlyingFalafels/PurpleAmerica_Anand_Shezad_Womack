@@ -1,8 +1,22 @@
+//NOTE*******: THIS IS TEMPORARY UNTIL CHRIS ADDS HIS FUNCTION WHICH IS THE GUI
+/*
+*THIS IS IN CHRONILOGICAL ORDER 
+*GETTING IMPORTS
+*CREATING TEMPORARY CLASS TO HOLD MY FUNCTION UNTIL CHRIS WOMACK DOES HIS PART
+*DECLARING VARIABLES
+*CREATING THE CONSTRUCTOR
+*ADDING METHOD FOR WHAT HAPPENS AFTER USER PRESSES SUBMIT
+*MAIN METHOD
+*/
+
 package map;
-
-
-import map.Emailer;
-import map.ScreenCapture;
+//ADDING IMPORTS HERE
+import java.awt.Component;
+import java.awt.Rectangle;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import javax.imageio.ImageIO;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -15,13 +29,15 @@ import map.ScreenCapture;
  * @author hcps-shehzadst
  */
 public class TahirsFunction extends javax.swing.JFrame {
-    String RECIEVE;
-    String EMAI;
-    String PASS;
-    String MESS;
+    //DECLARING VARIABLES HERE
+    public static String RECIEVE;
+    public static String EMAI;
+    public static String PASS;
+    public static String MESS;
     /**
      * Creates new form TahirsFunction
      */
+    //CREATING CONSTRUCTOR HERE
     public TahirsFunction() {
         initComponents();
     }
@@ -42,13 +58,18 @@ public class TahirsFunction extends javax.swing.JFrame {
         submit = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
         Reci = new javax.swing.JTextField();
-        Mess = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        numOf = new javax.swing.JTextField();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        Mess = new javax.swing.JTextArea();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel1.setText("Email:");
 
+        jLabel2.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel2.setText("Password:");
 
         email.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
@@ -65,6 +86,7 @@ public class TahirsFunction extends javax.swing.JFrame {
             }
         });
 
+        submit.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         submit.setText("Submit");
         submit.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -72,17 +94,28 @@ public class TahirsFunction extends javax.swing.JFrame {
             }
         });
 
+        jLabel3.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel3.setText("Recipient:");
 
         Reci.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
 
-        Mess.addActionListener(new java.awt.event.ActionListener() {
+        jLabel4.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel4.setText("Type message here:");
+
+        jLabel5.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel5.setText("Number of emails:");
+
+        numOf.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        numOf.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                MessActionPerformed(evt);
+                numOfActionPerformed(evt);
             }
         });
 
-        jLabel4.setText("Type message here:");
+        Mess.setColumns(20);
+        Mess.setFont(new java.awt.Font("Tahoma", 0, 11)); // NOI18N
+        Mess.setRows(5);
+        jScrollPane1.setViewportView(Mess);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -93,16 +126,22 @@ public class TahirsFunction extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jLabel3)
                     .addComponent(jLabel2)
-                    .addComponent(submit)
                     .addComponent(jLabel1)
                     .addComponent(email, javax.swing.GroupLayout.DEFAULT_SIZE, 153, Short.MAX_VALUE)
                     .addComponent(passWord)
-                    .addComponent(Reci))
+                    .addComponent(Reci)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(34, 34, 34)
+                        .addComponent(submit, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jLabel4)
-                    .addComponent(Mess, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(34, 34, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel5)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(numOf))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(34, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -111,22 +150,26 @@ public class TahirsFunction extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(jLabel4))
-                .addGap(15, 15, 15)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(email, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(30, 30, 30)
+                        .addGap(18, 18, 18)
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(passWord, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(30, 30, 30)
-                        .addComponent(jLabel3)
                         .addGap(18, 18, 18)
-                        .addComponent(Reci, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, Short.MAX_VALUE)
-                        .addComponent(submit))
-                    .addComponent(Mess))
-                .addGap(34, 34, 34))
+                        .addComponent(jLabel3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(Reci, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane1))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(submit)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(numOf, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(34, Short.MAX_VALUE))
         );
 
         pack();
@@ -139,33 +182,64 @@ public class TahirsFunction extends javax.swing.JFrame {
     private void passWordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_passWordActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_passWordActionPerformed
-
+    //CREATING METHOD FOR WHAT HAPPENS AFTER SUBMIT IS CLICKED
     private void submitMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_submitMouseClicked
-            PASS = passWord.getText();
+        //SETTING PASS TO THE TEXT THE USER ENTERED
+        PASS = passWord.getText();
+        //WHILE LOOP THE STATISFIES THE USER'S REQUEST
+        while(PASS == ""){
+            System.out.print("insert input");
+        }
+            //SETTING USER VALUES TO VARIABLES
             EMAI = email.getText();
             RECIEVE = Reci.getText();
             MESS = Mess.getText();
+        
+        int x = Integer.parseInt(numOf.getText()) + 1;
+        
+        for(int i = 1; i < x; i++){
+            //RECIEVER INFOR
             String[] to = {RECIEVE};
             if (Emailer.sendMail
-                (
+                (           //EMAIL ADDRESS INFOR
                             EMAI,
+                            //PASSWORD INFOR
                             PASS, 
+                            //MESSAGE
                             MESS, 
                         to))System.out.println("Email sent");
-
+            // IF IT DOESN'T WORK IT WILL TELL THE YOU
             else System.out.println("error");
-
-            ScreenCapture capture = new ScreenCapture();
-            capture.captureComponent(rootPane);
+        }    
+        
+        Emailz email = new Emailz();
+        email.Emailing();
+        
     }//GEN-LAST:event_submitMouseClicked
-
-    private void MessActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MessActionPerformed
+    //GETTING RECIEVE USING THE THIS METHOD
+    public static String getReceive(){
+        return RECIEVE;
+    }
+    //GETTING EMAI USING THIS METHOD
+    public static String getEmai(){
+        return EMAI;
+    }
+    //GETTING MESS USING THIS METHOD
+    public static String getMess(){
+        return MESS;
+    }
+    //GETTING PASS USING THIS METHOD
+    public static String getPass(){
+        return PASS;
+    }
+    private void numOfActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_numOfActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_MessActionPerformed
+    }//GEN-LAST:event_numOfActionPerformed
 
     /**
      * @param args the command line arguments
      */
+    //MAIN CLASS IS CREATED HERE
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -199,13 +273,16 @@ public class TahirsFunction extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTextField Mess;
+    private javax.swing.JTextArea Mess;
     private javax.swing.JTextField Reci;
     private javax.swing.JTextField email;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTextField numOf;
     private javax.swing.JTextField passWord;
     private javax.swing.JButton submit;
     // End of variables declaration//GEN-END:variables

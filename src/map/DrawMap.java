@@ -5,11 +5,6 @@ import edu.princeton.cs.introcs.StdDraw;
 import java.awt.Color;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.*; 
-import javax.activation.*;
-import javax.mail.*;
-import javax.mail.internet.*;
-import javax.naming.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -24,8 +19,6 @@ public class DrawMap {
         path = s;
 
     }
-    
-    
     
     //Here we are drawing the picture
     public void populateMap(String dataPath) throws FileNotFoundException, IOException {
@@ -188,10 +181,12 @@ public class DrawMap {
                 StdDraw.polygon(ary1, ary2);
                 x = regionNumber;
             }
-
+            
         }
     }
-
+    
+    
+    
     public void inputParsing(String mainString, int x) {
 
     }
